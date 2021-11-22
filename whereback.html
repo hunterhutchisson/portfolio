@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>The WhereBack Machine</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Header -->
+			<header id="header">
+				<a href="https://thewherebackmachine.netlify.app/" class="title" target="_blank" style="height: 50px;"><img src="images/favicon.png" alt="" style="height: 50px;"></a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li>  
+							<a href="#" class="dropbtn" onclick="myFunction()">Projects <i class="fas fa-caret-down"></i></a>
+							<div class="dropdown-content" id="myDropdown">
+								<a href="whereback.html"><h4>The WhereBack Machine</h4></a>
+								<a href="birdb.html"><h4>birDB</h4></a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">The WhereBack Machine</h1>
+							<h4>The WhereBack Machine is a historical throw-back web application utlizing Wikipedia's "On this Day" API. On this date in history, or on the date of your choosing, learn about historical events and where those locations are in the modern world.</h4>
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<div class="col-12"><span class="image fit"><img src="images/WBContent-FullScreen-XL.jpg" alt="" /></span></div>
+								</div>
+							</div>
+							<div class="col-12 col-12-medium">
+								<h2>Personal Tasks</h2>
+								<ul>
+									<li>Site functionality of initial search and user requested searches.</li>
+									<li>Data fetching event info and geolocations by a combination of Historical APIs and Wikipedia webscraping.</li>
+									<li>Search and Reset button functionality.</li>
+								</ul>
+								<h2>Skills</h2>
+								<section class="wrapper fade-up">
+									<div class="inner" style="padding-top: 0px;">
+										<div class="features">
+											<section>
+												<span class="icon solid major" ><i class="fab fa-js-square skills"></i></span>
+												<h3>JAVASCRIPT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-html5 skills"></i></span>
+												<h3>HTML</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-css3-alt skills"></i></span>									
+												<h3>CSS</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-bootstrap skills"></i></span>			
+												<h3>BOOTSTRAP</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-css3 skills"></i></span>					
+												<h3>CSS FLEXBOX</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-retweet skills"></i></span>							
+												<h3>AJAX</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-cloudversify skills"></i></span>
+												<h3>Wikipedia, On This Day API</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-chrome skills"></i></span>
+												<h3>Google Maps API</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-github skills"></i></span>							
+												<h3>GITHUB</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-code skills"></i></span>	
+												<h3>VS CODE</h3>
+											</section>
+										</div>
+									</div>
+								</section>
+							</div>
+							<h2>Code Snippet - Wikipedia Article Scrape for Geolocation</h2>
+							<pre><code>// Input link
+// Output - 1) lat long in decimal (string), 2) country name (string), 3) null
+function scrapeWikipedia(link) {
+	return new Promise(async (res, _rej) => {
+	try{
+		const wikiPageBlock = await fetch(link);
+		const wikiPageText = await wikiPageBlock.text();
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(wikiPageText, "text/html");
+		const infoBoxLabelList = doc.querySelectorAll(".infobox-label");
+		let countryNode;
+		// Checks to see if a country field exists to scrape coordinates
+		infoBoxLabelList.forEach((element) => {
+		if (element.textContent == "Country") {
+			countryNode = element;
+		}
+		});
+		// Option 1: Check Coordinates
+		if (doc.querySelector(".geo")) {
+			const coordString = doc.querySelector(".geo").textContent;
+			const coordArr = coordString.split('; ')
+			const lat = coordArr[0]
+			const lng = coordArr[1]
+			res({
+				country: "",
+				locationType: "coord",
+				latlng: { lat, lng },
+			});
+		}
+		// Option 2: Check Country
+		else if (countryNode) {
+		const countryParent = countryNode.parentNode;
+		const countryParentLastChild = countryParent.lastChild;
+		const country = countryParentLastChild.textContent;
+		res({
+			country,
+			locationType: "country",
+			latlng: { lat: "", lng: "" },
+		});
+		}
+		// Option 3: Found Nothing
+		else {
+		res(null);
+		}
+	}catch (ex) {
+		console.log(ex);
+	}
+	});
+}</code></pre>
+						<ul class="actions">
+							<li><a href="https://github.com/hunterhutchisson/Front-End-Project" target="_blank" class="button">github<i class="fab fa-github"></i></a></li>
+						</ul>
+						</div>
+					</section>
+			</div>
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>Design: Hunter Hutchisson</li>
+					</ul>
+				</div>
+			</footer>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script>
+				function myFunction() {
+					document.getElementById("myDropdown").classList.toggle("show");
+				}
+				window.onclick = function(e) {
+					if (!e.target.matches('.dropbtn')) {
+						const myDropdown = document.getElementById("myDropdown");
+						if (myDropdown.classList.contains('show')) {
+							myDropdown.classList.remove('show');
+						}
+					}
+				}
+				</script>
+	</body>
+</html>

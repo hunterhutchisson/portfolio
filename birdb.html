@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>birDB</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="http://birdb.io/" class="title" target="_blank"><img src="images/birDB-white-text-logo.png" alt="" style="height: 35px;"></a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li>  
+							<a href="#" class="dropbtn" onclick="myFunction()">Projects <i class="fas fa-caret-down"></i></a>
+							<div class="dropdown-content" id="myDropdown">
+								<a href="whereback.html"><h4>The WhereBack Machine</h4></a>
+								<a href="#"><h4>birDB</h4></a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">birDB</h1>
+							<h4>birDB is a birdwatching journal and social media site allowing you to learn about recent birds sighted, add field notes and images to a personal birdwatching journal, share sightings with others, and chat about similar interests.</h4>
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<div class="col-6"><span class="image fit"><img src="images/Screen-Shot-2021-11-09-at-10.53.07-AM.png" alt="" /></span></div>
+									<div class="col-6"><span class="image fit"><img src="images/Screen-Shot-2021-11-09-at-10.53.39-AM.png" alt="" /></span></div>
+									<div class="col-6"><span class="image fit"><img src="images/Screen Shot 2021-11-09 at 10.54.44 AM.png" alt="" /></span></div>
+									<div class="col-6"><span class="image fit"><img src="images/Screen Shot 2021-11-09 at 10.54.09 AM.png" alt="" /></span></div>
+								</div>
+							</div>
+							<div class="col-12 col-12-medium">
+								<h2>Personal Tasks</h2>
+								<ul>
+									<li>Front end site population for multiple and single posts.</li>
+									<li>Comment functionality - add, edit and delete comments.</li>
+									<li>Follow user functionality.</li>
+									<li>Implemented backend route handling and functionality for home and post pages. </li>
+								</ul>
+								<h2>Skills</h2>
+								<section class="wrapper fade-up">
+									<div class="inner" style="padding-top: 0px;">
+										<div class="features">
+											<section>
+												<span class="icon solid major" ><i class="fab fa-js-square skills"></i></span>
+												<h3>JAVASCRIPT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-node-js skills"></i></span>
+												<h3>NODE.JS</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-database skills"></i></span>									
+												<h3>PostgreSQL</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-server skills"></i></span>									
+												<h3>SEQUELIZE</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="far fa-file-alt skills"></i></span>									
+												<h3>EXPRESS.JS</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-html5 skills"></i></span>
+												<h3>HTML</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-bolt skills"></i></span>			
+												<h3>SOCKET.IO</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-product-hunt skills"></i></span>					
+												<h3>PASSPORT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-key skills"></i></span>							
+												<h3>BCRYPT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-cloud-upload-alt skills"></i></span>									
+												<h3>CLOUDINARY</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-github skills"></i></span>							
+												<h3>GITHUB</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-code skills"></i></span>	
+												<h3>VS CODE</h3>
+											</section>
+			
+										</div>
+									</div>
+								</section>
+							</div>
+							<h2>Code Snippet - Follow Another User, Database Update and Send Back Info </h2>
+							<pre><code>//add follow
+router.put('/user/:userPostsID', gatekeeper, async (req,res) => {
+    console.log('put');
+    let userPostsID = req.params.userPostsID
+    let record = await db.users.findByPk(req.user.id);
+    let userID = record.id
+    let dates = [];
+    let date = new Date();
+    let unsplitFollowing = record.following
+    let followingIDList = (unsplitFollowing !== null)? unsplitFollowing.split(','): [];
+    if(!followingIDList.includes(userPostsID)){
+        if (unsplitFollowing){
+            unsplitFollowing += `,${userPostsID}`
+        } else {
+            unsplitFollowing = userPostsID
+        }
+        await db.users.update({following: unsplitFollowing}, {where: {id: userID}});
+    }
+
+    date.setDate(date.getDate() - 3);
+    
+    let updatedRecord = await db.users.findByPk(req.user.id);
+    let recentPosts = await db.posts.findAll({where: {userID: userPostsID} });
+    let updatedFollowing = updatedRecord.following
+    let updatedFollowingList = (updatedFollowing !== null)? updatedFollowing.split(','): []
+    console.log(updatedFollowingList);
+    let usernames = await arrayIterator(recentPosts, getUsername);
+    let following = await arrayIterator(followingIDList, getFollowingUsers);
+        
+    recentPosts.forEach(post => {
+        let rawDate = post.dataValues.createdAt
+        let formattedDate = {
+            "month": monthNames[rawDate.getMonth()], 
+            "day": rawDate.getDate()
+        }
+        dates.push(formattedDate);
+    });
+
+    res.render('index', {
+        username: record.username,
+        userID: record.id,
+        following: updatedFollowingList,
+        recentPosts: recentPosts,
+        dates: dates,
+        usernames: usernames
+    });
+});
+							</code></pre>
+							<ul class="actions">
+								<li><a href="https://github.com/hunterhutchisson/birDB" target="_blank" class="button">github<i class="fab fa-github"></i></a></li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>Design: Hunter Hutchisson</li>					
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script>
+				function myFunction() {
+					document.getElementById("myDropdown").classList.toggle("show");
+				}
+				window.onclick = function(e) {
+					if (!e.target.matches('.dropbtn')) {
+						const myDropdown = document.getElementById("myDropdown");
+						if (myDropdown.classList.contains('show')) {
+							myDropdown.classList.remove('show');
+					}
+					}
+				}
+				</script>
+
+	</body>
+</html>
