@@ -1,0 +1,257 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>MD Styles</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+		<!-- Header -->
+			<header id="header">
+				<a href="https://mdstyles.netlify.app/" class="title" target="_blank" style="height: 50px;"><img src="images/mdicon.png" alt="" style="height: 50px;"></a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li>  
+							<a href="#" class="dropbtn" onclick="myFunction()">Projects <i class="fas fa-caret-down"></i></a>
+							<div class="dropdown-content" id="myDropdown">
+								<a href="whereback.html"><h4>The WhereBack Machine</h4></a>
+								<a href="birdb.html"><h4>birDB</h4></a>
+								<a href="mdstyles.html"><h4>MD Styles</h4></a>
+							</div>
+						</li>
+					</ul>
+				</nav>
+			</header>
+		<!-- Wrapper -->
+			<div id="wrapper">
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">MD Styles</h1>
+							<h4>MD Styles is a tool to help developers with the syntax of markdown enhancements for their README files.</h4>
+							<div class="box alt">
+								<div class="row gtr-uniform">
+									<div class="row gtr-uniform">
+										<div class="col-6"><span class="image fit"><img src="images/mdsshot.png" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/edittemplatetop.png" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/nonstructureedit.png" alt="" /></span></div>
+										<div class="col-6"><span class="image fit"><img src="images/nonstructureexample.png" alt="" /></span></div>
+									</div>								
+								</div>
+							</div>
+							<div class="col-12 col-12-medium">
+								<h2>Personal Tasks</h2>
+								<ul>
+									<li>Create entire site.</li>
+									<li>Created reusable form components to convert user input to markdown syntax.</li>
+									<li>Use redux store to update the state used to store form information.</li>
+								</ul>
+								<h2>Languages/Technologies</h2>
+								<section class="wrapper fade-up">
+									<div class="inner" style="padding-top: 0px;">
+										<div class="features">
+											<section>
+												<span class="icon solid major" ><i class="fab fa-js-square skills"></i></span>
+												<h3>JAVASCRIPT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-react skills"></i></span>
+												<h3>REACT</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-code skills"></i></span>
+												<h3>REDUX</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-html5 skills"></i></span>
+												<h3>HTML</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-css3-alt skills"></i></span>									
+												<h3>CSS</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-bootstrap skills"></i></span>			
+												<h3>BOOTSTRAP</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-cloudversify skills"></i></span>
+												<h3>GitHub Markdown Preview API</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-cloudversify skills"></i></span>
+												<h3>Markdown Guide API</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fab fa-github skills"></i></span>							
+												<h3>GITHUB</h3>
+											</section>
+											<section>
+												<span class="icon solid major" ><i class="fas fa-code skills"></i></span>	
+												<h3>VS CODE</h3>
+											</section>
+										</div>
+									</div>
+								</section>
+							</div>
+							<h2>Code Snippet - Markdown Reducer</h2>
+							<pre><code>import { EDIT_MARKDOWN_STATE_TEMPLATE, EDIT_MARKDOWN_TEMPLATE, DELETE_MARKDOWN_TEMPLATE, LOAD_TEMPLATE } from "../actions/types"
+import templateList from "../assets/data"
+
+const initialState = {
+	templateObjList: templateList
+}
+
+const markdownReducer = (state=initialState, action) => {
+	switch(action.type){
+		case LOAD_TEMPLATE:
+			return {
+				...state,
+				templateObjList: templateList
+			}
+		case EDIT_MARKDOWN_STATE_TEMPLATE:
+			let newTemplateObjStateList = [...state.templateObjList]
+			newTemplateObjStateList.map(object=>{
+				if(object.id === action.markdownObj.id){
+					return action.markdownObj.edit = !object.edit
+				}
+				return object
+			})
+			return {
+				...state,
+				templateObjList: newTemplateObjStateList
+			}
+		case EDIT_MARKDOWN_TEMPLATE:
+			let newMarkdownObjEditList = [...state.templateObjList]
+			let swappedObjList = newMarkdownObjEditList.map(object=>{
+				if(object.id === action.markdownObj.id){
+					return action.markdownObj
+				}
+				return object
+			})
+			return {
+				...state,
+				templateObjList: swappedObjList
+			}
+		case DELETE_MARKDOWN_TEMPLATE:
+			return {
+				...state,
+				templateObjList: state.templateObjList.filter(obj=> obj.id !== action.markdownObj.id),
+			}
+		default:
+			return state
+	}
+}
+
+export default markdownReducer</code></pre>
+							<h2>Code Snippet - Image Form Component</h2>
+							<pre><code>import React, {useState, useEffect} from "react";
+import { useDispatch } from "react-redux";
+import {Form} from 'react-bootstrap';
+import { v4 as uuidv4 } from 'uuid';
+import { storeMarkdowns, editMarkdown } from "../actions/markdownActions";
+import { editMarkdownTemplate } from "../actions/templateActions";
+import { fetchHTML } from './utils'
+
+const Images = ({markdownFormActive, name, markdownObjPassed, overallForm}) => {
+	const dispatch = useDispatch()
+	const [altTextInput, setAltTextInput] = useState(()=>markdownObjPassed ? markdownObjPassed.altTextInput:"")
+	const [srcInput, setSrcInput] = useState(()=>markdownObjPassed ? markdownObjPassed.srcInput:"")
+	const [htmlOutput, setHtmlOutput] = useState("")
+	const [combinedInput, setCombinedInput] = useState("")
+
+	const combineImg = (altText, path) => {
+		return setCombinedInput(`![${altText}](${path})`)
+	}
+
+	const handleSubmitImage = (e) => {
+		e.preventDefault()
+		combineImg(altTextInput, srcInput)
+	}
+	useEffect(() => {
+		if(combinedInput.length){
+			fetchHTML(combinedInput, setHtmlOutput)
+		}
+	}, [combinedInput])
+	useEffect(() => {
+		let mdID = markdownObjPassed ? markdownObjPassed.id : uuidv4()
+		let mdName = markdownObjPassed ? markdownObjPassed.name : name
+		let markdownObj = {
+			id: mdID,
+			altTextInput,
+			srcInput,
+			combinedInput,
+			htmlOutput,
+			name: mdName,
+			edit: false
+		}
+		if(markdownObj.htmlOutput.length > 0){
+			(markdownObjPassed ? ((overallForm === "template") ? dispatch((editMarkdownTemplate(markdownObj))):dispatch(editMarkdown(markdownObj))):dispatch(storeMarkdowns(markdownObj)))
+			markdownFormActive(false)
+		}
+	}, [htmlOutput])
+
+
+	return (
+	&lt;&gt;
+		&lt;Form onSubmit={handleSubmitImage}&gt;
+			&lt;Form.Group className="mb-3"&gt;
+				&lt;Form.Label&gt;Path or URL:&lt;/Form.Label&gt;
+				&lt;Form.Control type="text" placeholder="Path or URL" value={srcInput} onChange={e=&gt;setSrcInput(e.target.value)}/&gt;
+			&lt;/Form.Group&gt;
+			&lt;Form.Group className="mb-3"&gt;
+				&lt;Form.Label&gt;AltText:&lt;/Form.Label&gt;
+				&lt;Form.Control type="text" placeholder="AltText" value={altTextInput} onChange={e=&gt;setAltTextInput(e.target.value)}/&gt;
+			&lt;/Form.Group&gt;
+			&lt;button className="btn btn-ocean"&gt;SUBMIT&lt;/button&gt; 
+		&lt;/Form&gt;
+	&lt;/&gt;
+	)
+}
+
+export default Images</code></pre>
+						<ul class="actions">
+							<li><a href="https://github.com/hunterhutchisson/template" target="_blank" class="button">github<i class="fab fa-github"></i></a></li>
+						</ul>
+						</div>
+					</section>
+			</div>
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>Design: Hunter Hutchisson</li>
+					</ul>
+				</div>
+			</footer>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script>
+				function myFunction() {
+					document.getElementById("myDropdown").classList.toggle("show");
+				}
+				window.onclick = function(e) {
+					if (!e.target.matches('.dropbtn')) {
+						const myDropdown = document.getElementById("myDropdown");
+						if (myDropdown.classList.contains('show')) {
+							myDropdown.classList.remove('show');
+						}
+					}
+				}
+				</script>
+	</body>
+</html>
